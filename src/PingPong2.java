@@ -10,22 +10,22 @@ import java.io.File;
 
 public class PingPong2 {
 
-    /** position of quad */
-    float x = 400, y = 300;
-    /** angle of quad rotation */
+    public Player player;
+    public Ball ball;
+
     float rotation = 0;
 
-    /** time at last frame */
     long lastFrame;
-
-    /** frames per second */
     int fps;
-    /** last fps time */
     long lastFPS;
 
     public void start() {
+
+        ball = new Ball();
+        player = new Player();
+
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            Display.setDisplayMode(new DisplayMode(600, 800));
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
@@ -50,20 +50,10 @@ public class PingPong2 {
     }
 
     public void update(int delta) {
-// rotate quad
-        rotation += 0.15f * delta;
+        // rotate quad
+        // rotation += 0.45f * delta;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
-        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y -= 0.35f * delta;
-        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y += 0.35f * delta;
-
-// keep quad on the screen
-        if (x < 0) x = 0;
-        if (x > 800) x = 800;
-        if (y < 0) y = 0;
-        if (y > 600) y = 600;
+        player.update(delta);
 
         updateFPS(); // update FPS Counter
     }
@@ -113,23 +103,20 @@ public class PingPong2 {
     public void renderGL() {
 // Clear The Screen And The Depth Buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-// R,G,B,A Set The Color To Blue One Time Only
         GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
-// draw quad
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0);
-        GL11.glRotatef(rotation, 0f, 0f, 1f);
-        GL11.glTranslatef(-x, -y, 0);
+// draw player
+//        GL11.glPushMatrix();
+//        GL11.glTranslatef(x, y, 0);
+//        GL11.glRotatef(rotation, 0f, 0f, 1f);
+//        GL11.glTranslatef(-x, -y, 0);
 
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(x - 50, y - 50);
-        GL11.glVertex2f(x + 50, y - 50);
-        GL11.glVertex2f(x + 50, y + 50);
-        GL11.glVertex2f(x - 50, y + 50);
+        player.render();
+
         GL11.glEnd();
         GL11.glPopMatrix();
+
+
     }
 
     public static void main(String[] argv) {
