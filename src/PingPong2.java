@@ -1,7 +1,6 @@
 import org.lwjgl.LWJGLException;
 import org.lwjgl.LWJGLUtil;
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -13,19 +12,24 @@ public class PingPong2 {
     public Player player;
     public Ball ball;
 
-    float rotation = 0;
+    // float rotation = 0;
 
     long lastFrame;
     int fps;
     long lastFPS;
+
+    public static int WIDTH = 400;
+    public static int HEIGHT = 600;
 
     public void start() {
 
         ball = new Ball();
         player = new Player();
 
+        ball.addPlayer(player);
+
         try {
-            Display.setDisplayMode(new DisplayMode(600, 800));
+            Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
@@ -54,6 +58,7 @@ public class PingPong2 {
         // rotation += 0.45f * delta;
 
         player.update(delta);
+        ball.update(delta);
 
         updateFPS(); // update FPS Counter
     }
@@ -94,9 +99,10 @@ public class PingPong2 {
     }
 
     public void initGL() {
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        // GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, 800, 0, 600, 1, -1);
+        GL11.glOrtho(0, WIDTH, 0, HEIGHT, 1, -1);
+
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
@@ -106,12 +112,19 @@ public class PingPong2 {
         GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
 // draw player
-//        GL11.glPushMatrix();
+        GL11.glPushMatrix();
 //        GL11.glTranslatef(x, y, 0);
 //        GL11.glRotatef(rotation, 0f, 0f, 1f);
 //        GL11.glTranslatef(-x, -y, 0);
 
+        ball.render();
+
+
+        GL11.glEnd();
+        GL11.glPopMatrix();
+
         player.render();
+
 
         GL11.glEnd();
         GL11.glPopMatrix();
@@ -120,7 +133,8 @@ public class PingPong2 {
     }
 
     public static void main(String[] argv) {
-        System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
+        System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"),
+                LWJGLUtil.getPlatformName()).getAbsolutePath());
 
         PingPong2 inputExample = new PingPong2();
         inputExample.start();

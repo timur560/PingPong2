@@ -6,19 +6,32 @@ import org.lwjgl.opengl.GL11;
  */
 public class Player extends GameObject {
 
-    private static final int STATE_NOT_MOVING = 0;
-    private static final int STATE_MOVING_UP = 1;
-    private static final int STATE_MOVING_DOWN = 2;
-    private float length = 200;
+    public static final int STATE_NOT_MOVING = 0;
+    public static final int STATE_MOVING_UP = 1;
+    public static final int STATE_MOVING_DOWN = 2;
+
+    public static final int POSITION_TOP = 0;
+    public static final int POSITION_RIGHT = 1;
+    public static final int POSITION_BOTTOM = 2;
+    public static final int POSITION_LEFT = 3;
+
+    private float length = 150;
     private float height = 20;
 
-    /** position of quad */
-    private float x = 400, y = height;
-
     private int state;
+    private int position = POSITION_BOTTOM;
 
     public Player() {
+        x = PingPong2.WIDTH / 2;
+        y = height;
+    }
 
+    public float getHeight() {
+        return height;
+    }
+
+    public float getLength() {
+        return length;
     }
 
     @Override
@@ -41,7 +54,9 @@ public class Player extends GameObject {
 
         // keep player on the screen
         if (x - length / 2 < 0) x = length / 2;
-        if (x - length / 2 > 600) x = 600 + length / 2;
+        if (x + length / 2 > PingPong2.WIDTH) {
+            x = PingPong2.WIDTH - length / 2;
+        }
 //        if (y < 0) y = 0;
 //        if (y > 800) y = 800;
     }
@@ -53,5 +68,9 @@ public class Player extends GameObject {
         GL11.glVertex2f(x + length / 2, y);
         GL11.glVertex2f(x + length / 2, y - height);
         GL11.glVertex2f(x - length / 2, y - height);
+    }
+
+    public int getPosition() {
+        return position;
     }
 }
