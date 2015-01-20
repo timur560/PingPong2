@@ -9,7 +9,7 @@ import static java.lang.Math.*;
  * Created by qwer on 19.01.15.
  */
 public class Ball extends GameObject {
-    private float radius = 20;
+    private float radius = 15;
 
     private float direction = 140;
     private float speed = 4;

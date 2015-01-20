@@ -100,7 +100,7 @@ public class Player extends GameObject {
     public void render() {
 
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor3f(0.5f, 0.5f, 1.0f); //, 0.5f);
+            GL11.glColor3f(0.2f, 0.2f, 1.0f);
             GL11.glVertex2f(x - length / 2, y);
             GL11.glVertex2f(x + length / 2, y);
             GL11.glVertex2f(x + length / 2, y - height);
