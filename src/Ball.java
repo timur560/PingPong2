@@ -12,11 +12,14 @@ public class Ball extends GameObject {
     private float radius = 20;
 
     private float direction = 140;
-    private float speed = 3;
+    private float speed = 4;
 
     private List<Player> players = new ArrayList<Player>();
 
-    public Ball() {
+    PingPong2 parent;
+
+    public Ball(PingPong2 parent) {
+        this.parent = parent;
         x = 100;
         y = 300;
     }
@@ -43,11 +46,28 @@ public class Ball extends GameObject {
 
                             direction = (float) (20 + 140 * (p.x + p.getLength() / 2 - x + xk) / p.getLength());
 
-                            // speed ++;
+                            speed += 0.3;
                         } else {
+                            p.antiScore++;
                             reset();
                         }
                     }
+
+                    break;
+                case Player.POSITION_TOP:
+                    if (y + yk + radius > PingPong2.HEIGHT - p.getHeight()) {// height
+                        if (x + xk > p.x - p.getLength() / 2 // left border
+                                && x + xk < p.x + p.getLength() / 2) { // right border
+
+                            direction = (float) (340 - 140 * (p.x + p.getLength() / 2 - x + xk) / p.getLength());
+
+                            speed += 0.3;
+                        } else {
+                            p.antiScore++;
+                            reset();
+                        }
+                    }
+
                     break;
             }
         }
@@ -72,17 +92,18 @@ public class Ball extends GameObject {
         x = 100;
         y = 300;
         direction = 140;
-        speed = 3;
+        speed = 4;
     }
 
     @Override
     public void render() {
+        GL11.glColor3f(1.0f, 1.0f, 0.0f);
 
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(x - radius, y + radius);
-        GL11.glVertex2f(x + radius, y + radius);
-        GL11.glVertex2f(x + radius, y - radius);
-        GL11.glVertex2f(x - radius, y - radius);
-
+            GL11.glVertex2f(x - radius, y + radius);
+            GL11.glVertex2f(x + radius, y + radius);
+            GL11.glVertex2f(x + radius, y - radius);
+            GL11.glVertex2f(x - radius, y - radius);
+        GL11.glEnd();
     }
 }
